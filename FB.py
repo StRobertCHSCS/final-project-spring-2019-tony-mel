@@ -18,7 +18,7 @@ class bird(arcade.Sprite):
         self.gravity = 1
 
     def update(self):
-        self.center_x += gravity
+        self.center_x += 0
 
 class pipes(arcade.Sprite):
 
@@ -30,6 +30,11 @@ class pipes(arcade.Sprite):
     def update(self):
 
         self.center_x += self.pipespeed
+
+        if self.center_x == -50:
+            self.center_x += 500
+
+
 
 
 
