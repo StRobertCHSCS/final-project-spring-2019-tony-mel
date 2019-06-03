@@ -1,6 +1,7 @@
 import random
 import arcade
 import math
+import sys
 
 swidth = 400
 sheight = 600
@@ -43,6 +44,12 @@ class pipes(arcade.Sprite):
 
         if self.center_x == -50:
             self.center_x += 500
+
+        if self.center_x == 500:
+            self.center_y
+
+
+
 
 
 
@@ -88,7 +95,7 @@ class MyGame(arcade.Window):
 
         # Set up the player
         self.score = 0
-        self.player_sprite = bird("images/whale.png", 0.4)
+        self.player_sprite = bird("images/nemo.png", 0.05)
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 300
         self.all_sprites_list.append(self.player_sprite)
@@ -107,7 +114,7 @@ class MyGame(arcade.Window):
 
 
 
-        arcade.set_background_color(arcade.color.AMAZON)
+        arcade.set_background_color(arcade.color.OCEAN_BOAT_BLUE)
 
     #def setup(self):
 
@@ -137,6 +144,13 @@ class MyGame(arcade.Window):
 
     def update(self, delta_time):
         self.all_sprites_list.update()
+
+        thit = arcade.check_for_collision(self.player_sprite, self.toppipe_sprite)
+        bhit = arcade.check_for_collision(self.player_sprite, self.bottompipe_sprite)
+
+        if thit or bhit:
+            self.player_sprite.kill()
+            sys.exit()
 
 
 
