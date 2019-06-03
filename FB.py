@@ -16,16 +16,26 @@ class bird(arcade.Sprite):
         self.x = 25
         self.velocity = 0
         self.gravity = 1
+        self.jump = 0
+        self.jumpSpeed = 10
 
     def update(self):
-        self.center_x += 0
+        self.center_y -= self.gravity
+        #if self.jump:
+            #self.jumpSpeed -= 1
+            #self.y -= self.jumpSpeed
+            #self.jump -= 1
+        #else:
+            #self.y += self.gravity
+            #self.gravity += 0.2
+
 
 class pipes(arcade.Sprite):
 
     def __init__(self, filename, SCALE):
         super().__init__(filename, SCALE)
         self.size = 0
-        self.pipespeed = -1
+        self.pipespeed = -5
 
     def update(self):
 
@@ -78,7 +88,7 @@ class MyGame(arcade.Window):
 
         # Set up the player
         self.score = 0
-        self.player_sprite = bird("images/bird1.png", SCALE)
+        self.player_sprite = bird("images/whale.png", 0.4)
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 300
         self.all_sprites_list.append(self.player_sprite)
@@ -107,6 +117,17 @@ class MyGame(arcade.Window):
             self.wallx = 400
             self.counter += 1
             self.offset = random.randint(-110, 110)
+
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.SPACE:
+            self.player_sprite.center_y +=30
+
+
+
+
+    def on_key_release(self, key, modifiers):
+        if key == arcade.key.SPACE:
+            self.player_sprite.center_y -= 1
 
     def on_draw(self):
         arcade.start_render()
