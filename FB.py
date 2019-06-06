@@ -8,13 +8,16 @@ sheight = 600
 gravity = 1
 velocity = 0
 SCALE = 1
+gap  = 100 # gap between upper and lower part of pipe
+basey = sheight* 0.79
+hitmasks = {}
+
 
 
 class bird(arcade.Sprite):
     def __init__(self, filename, sprite_scaling):
         super().__init__(filename, sprite_scaling)
-        self.y = swidth / 2
-        self.x = 25
+
         self.velocity = 0
         self.gravity = 1
         self.jump = 0
@@ -36,9 +39,28 @@ class pipes(arcade.Sprite):
     def __init__(self, filename, SCALE):
         super().__init__(filename, SCALE)
         self.size = 0
-        self.pipespeed = -5
+        self.pipespeed = -4
 
     def update(self):
+        self.center_x += self.pipespeed
+
+            # add new pipe when first pipe is about to touch left of screen
+        if 0 < self.center_x < 5:
+            newPipe = getRandomPipe()
+            upperPipes.append(newPipe[0])
+            lowerPipes.append(newPipe[1])
+
+            # remove first pipe if its out of the screen
+        if upperPipes[0]['x'] < -IMAGES['pipe'][0].get_width():
+            upperPipes.pop(0)
+            lowerPipes.pop(0)
+
+
+
+
+
+
+
 
         self.center_x += self.pipespeed
 
@@ -95,7 +117,7 @@ class MyGame(arcade.Window):
 
         # Set up the player
         self.score = 0
-        self.player_sprite = bird("images/nemo.png", 0.05)
+        self.player_sprite = bird("images/spiderman.png", 0.05)
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 300
         self.all_sprites_list.append(self.player_sprite)
@@ -111,6 +133,7 @@ class MyGame(arcade.Window):
         self.bottompipe_sprite.center_x = 250
         self.bottompipe_sprite.center_y = 0
         self.all_sprites_list.append(self.bottompipe_sprite)
+
 
 
 
