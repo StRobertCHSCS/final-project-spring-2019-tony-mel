@@ -8,10 +8,9 @@ sheight = 600
 gravity = 1
 velocity = 0
 SCALE = 1
-gap  = 100 # gap between upper and lower part of pipe
-basey = sheight* 0.79
+gap = 100  # gap between upper and lower part of pipe
+basey = sheight * 0.79
 hitmasks = {}
-
 
 
 class bird(arcade.Sprite):
@@ -22,16 +21,17 @@ class bird(arcade.Sprite):
         self.gravity = 1
         self.jump = 0
         self.jumpSpeed = 10
+        self.score = 0
 
     def update(self):
         self.center_y -= self.gravity
-        #if self.jump:
-            #self.jumpSpeed -= 1
-            #self.y -= self.jumpSpeed
-            #self.jump -= 1
-        #else:
-            #self.y += self.gravity
-            #self.gravity += 0.2
+        # if self.jump:
+        # self.jumpSpeed -= 1
+        # self.y -= self.jumpSpeed
+        # self.jump -= 1
+        # else:
+        # self.y += self.gravity
+        # self.gravity += 0.2
 
 
 class pipes(arcade.Sprite):
@@ -39,44 +39,15 @@ class pipes(arcade.Sprite):
     def __init__(self, filename, SCALE):
         super().__init__(filename, SCALE)
         self.size = 0
-        self.pipespeed = -4
+        self.pipespeed = -2
+
 
     def update(self):
         self.center_x += self.pipespeed
 
-            # add new pipe when first pipe is about to touch left of screen
-        if 0 < self.center_x < 5:
-            newPipe = getRandomPipe()
-            upperPipes.append(newPipe[0])
-            lowerPipes.append(newPipe[1])
-
-            # remove first pipe if its out of the screen
-        if upperPipes[0]['x'] < -IMAGES['pipe'][0].get_width():
-            upperPipes.pop(0)
-            lowerPipes.pop(0)
-
-
-
-
-
-
-
-
-        self.center_x += self.pipespeed
-
-        if self.center_x == -50:
-            self.center_x += 500
-
-        if self.center_x == 500:
-            self.center_y
-
-
-
-
-
-
-
-
+        # add new pipe when first pipe is about to touch left of screen
+        if self.center_x < -50:
+            self.center_x = swidth + 50
 
 
 
@@ -91,7 +62,6 @@ class MyGame(arcade.Window):
 
         self.game_over = False
 
-
         self.all_sprites_list = None
         self.toppipe_list = None
         self.bottompipe_list = None
@@ -101,8 +71,6 @@ class MyGame(arcade.Window):
         # Set up the player
         self.score = 0
         self.player_sprite = None
-
-
 
         self.set_mouse_visible(False)
 
@@ -117,13 +85,13 @@ class MyGame(arcade.Window):
 
         # Set up the player
         self.score = 0
-        self.player_sprite = bird("images/spiderman.png", 0.05)
+        self.player_sprite = bird("images/whale.png", 0.05)
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 300
         self.all_sprites_list.append(self.player_sprite)
         self.lives = 3
 
-        #set up pipes
+        # set up pipes
         self.toppipe_sprite = pipes("images/top.png", SCALE)
         self.toppipe_sprite.center_x = 250
         self.toppipe_sprite.center_y = 600
@@ -134,12 +102,11 @@ class MyGame(arcade.Window):
         self.bottompipe_sprite.center_y = 0
         self.all_sprites_list.append(self.bottompipe_sprite)
 
+        self.background = arcade.load_texture("images/backgroudn.jpg")
 
 
 
-        arcade.set_background_color(arcade.color.OCEAN_BOAT_BLUE)
-
-    #def setup(self):
+    # def setup(self):
 
     def updateWalls(self):
         self.wallx -= 2
@@ -150,10 +117,7 @@ class MyGame(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.SPACE:
-            self.player_sprite.center_y +=30
-
-
-
+            self.player_sprite.center_y += 30
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.SPACE:
@@ -161,8 +125,12 @@ class MyGame(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
-        #bird.draw(self)
+        # bird.draw(self)
+        arcade.draw_texture_rectangle(0, 400, 0.6*self.background.width,
+                                      0.6*self.background.height, self.background, 0)
         self.all_sprites_list.draw()
+
+        output = f"Score: {self.score}"
 
 
     def update(self, delta_time):
@@ -171,15 +139,12 @@ class MyGame(arcade.Window):
         thit = arcade.check_for_collision(self.player_sprite, self.toppipe_sprite)
         bhit = arcade.check_for_collision(self.player_sprite, self.bottompipe_sprite)
 
+        if self.toppipe_sprite.center_x == 0:
+            self.score += 1
+
         if thit or bhit:
             self.player_sprite.kill()
             sys.exit()
-
-
-
-
-
-
 
 
 def main():
@@ -187,6 +152,7 @@ def main():
     window = MyGame()
     window.start_new_game()
     arcade.run()
+
 
 if __name__ == "__main__":
     main()
