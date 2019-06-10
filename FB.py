@@ -5,7 +5,7 @@ import sys
 
 swidth = 400
 sheight = 600
-gravity = 1
+gravity =
 velocity = 0
 SCALE = 1
 gap = 100  # gap between upper and lower part of pipe
@@ -94,12 +94,12 @@ class MyGame(arcade.Window):
         # set up pipes
         self.toppipe_sprite = pipes("images/top.png", SCALE)
         self.toppipe_sprite.center_x = 250
-        self.toppipe_sprite.center_y = 600
+        self.toppipe_sprite.center_y = 650
         self.all_sprites_list.append(self.toppipe_sprite)
 
         self.bottompipe_sprite = pipes("images/bottom.png", SCALE)
         self.bottompipe_sprite.center_x = 250
-        self.bottompipe_sprite.center_y = 0
+        self.bottompipe_sprite.center_y = -50
         self.all_sprites_list.append(self.bottompipe_sprite)
 
         self.background = arcade.load_texture("images/backgroudn.jpg")
@@ -117,7 +117,7 @@ class MyGame(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.SPACE:
-            self.player_sprite.center_y += 30
+            self.player_sprite.center_y += 115
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.SPACE:
@@ -126,11 +126,13 @@ class MyGame(arcade.Window):
     def on_draw(self):
         arcade.start_render()
         # bird.draw(self)
-        arcade.draw_texture_rectangle(0, 400, 0.6*self.background.width,
-                                      0.6*self.background.height, self.background, 0)
+        arcade.draw_texture_rectangle(200, 400, 0.5*self.background.width,
+                                      0.5*self.background.height, self.background, 0)
         self.all_sprites_list.draw()
 
-        output = f"Score: {self.score}"
+        output = f"S {self.score}"
+        arcade.draw_text(output, swidth/2 - 30, 500, arcade.color.BLACK, 30)
+
 
 
     def update(self, delta_time):
