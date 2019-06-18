@@ -25,13 +25,13 @@ class bird(arcade.Sprite):
 
     def update(self):
         self.center_y -= self.gravity
-        #if self.jump:
-            #self.jumpSpeed -= 1
-            #self.y -= self.jumpSpeed
-            #self.jump -= 1
-        #else:
-            #self.y += self.gravity
-            #self.gravity += 0.2
+        if self.jump:
+            self.jumpSpeed -= 1
+            self.y -= self.jumpSpeed
+            self.jump -= 1
+        else:
+            self.y += self.gravity
+            self.gravity += 0.2
 
 
 class pipes(arcade.Sprite):
@@ -161,7 +161,7 @@ class MyGame(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
-        #bird.draw(self)
+        bird.draw(self)
         self.all_sprites_list.draw()
 
 

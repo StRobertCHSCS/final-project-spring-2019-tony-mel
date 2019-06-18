@@ -48,65 +48,11 @@ class SwimmyWhale(arcade.Window):
         self.lowerpipe_list.draw()
         self.player_list.draw()
 
-
-
-
-
 def main():
     """ Main method """
     window = SwimmyWhale()
     window.setup()
     arcade.run()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     main()
