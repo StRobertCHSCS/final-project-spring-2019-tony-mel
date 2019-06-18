@@ -8,9 +8,7 @@ sheight = 600
 gravity = 1
 velocity = 0
 SCALE = 1
-gap = 100  # gap between upper and lower part of pipe
-basey = sheight * 0.79
-hitmasks = {}
+
 
 
 class bird(arcade.Sprite):
@@ -18,28 +16,19 @@ class bird(arcade.Sprite):
         super().__init__(filename, sprite_scaling)
 
         self.velocity = 0
-        self.gravity = 3
+        self.gravity = 2
         self.jump = 0
         self.jumpSpeed = 10
-        self.score = 0
 
     def update(self):
-        self.center_y -= self.gravity
-        # if self.jump:
-        # self.jumpSpeed -= 1
-        # self.y -= self.jumpSpeed
-        # self.jump -= 1
-        # else:
-        # self.y += self.gravity
-        # self.gravity += 0.2
+            self.center_y -= self.gravity
 
 
 class toppipes(arcade.Sprite):
 
     def __init__(self, filename, SCALE):
         super().__init__(filename, SCALE)
-        self.size = 0
-        self.pipespeed = -2
+        self.pipespeed = -4
 
 
     def update(self):
@@ -47,15 +36,14 @@ class toppipes(arcade.Sprite):
 
         # add new pipe when first pipe is about to touch left of screen
         if self.center_x < -50:
-            self.center_x = 550
+            self.center_x = 500
             self.center_y = random.randint(600, 750)
 
 class bottompipes(arcade.Sprite):
 
     def __init__(self, filename, SCALE):
         super().__init__(filename, SCALE)
-        self.size = 0
-        self.pipespeed = -2
+        self.pipespeed = -4
 
 
     def update(self):
@@ -63,8 +51,8 @@ class bottompipes(arcade.Sprite):
 
         # add new pipe when first pipe is about to touch left of screen
         if self.center_x < -50:
-            self.center_x = 550
-            self.center_y = random.randint(-110, 40)
+            self.center_x = 500
+            self.center_y = random.randint(-110, 0)
 
 
 
@@ -74,11 +62,6 @@ class MyGame(arcade.Window):
         super().__init__(swidth, sheight, "Flappy bird")
 
         self.offset = random.randint(-110, 110)
-        self.wallx = 400
-        self.frame_count = 0
-
-        self.game_over = False
-
         self.all_sprites_list = None
         self.toppipe_list = None
         self.bottompipe_list = None
@@ -92,8 +75,7 @@ class MyGame(arcade.Window):
         self.set_mouse_visible(False)
 
     def start_new_game(self):
-        self.frame_count = 0
-        self.game_over = False
+
 
         # Sprite lists
         self.all_sprites_list = arcade.SpriteList()
@@ -115,14 +97,15 @@ class MyGame(arcade.Window):
 
         self.bottompipe_sprite = bottompipes("images/bottom.png", SCALE)
         self.bottompipe_sprite.center_x = 250
-        self.bottompipe_sprite.center_y = random.randint(-110, 50)
+        self.bottompipe_sprite.center_y = random.randint(-110, 0)
 
 
         self.background = arcade.load_texture("images/backgroudn.jpg")
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.SPACE:
-            self.player_sprite.center_y += 70
+
+            self.player_sprite.center_y += 60
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.SPACE:
@@ -137,7 +120,7 @@ class MyGame(arcade.Window):
         self.bottompipe_sprite.draw()
         self.toppipe_sprite.draw()
 
-        output = f"S {self.score}"
+        output = f" {self.score}"
         arcade.draw_text(output, swidth/2 - 30, 500, arcade.color.BLACK, 30)
 
 
